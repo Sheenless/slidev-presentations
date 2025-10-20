@@ -50,11 +50,11 @@ jobs:
       # After the matrix has produced dist/<deck>/... for all decks,
       # upload the entire dist/ as the Pages artifact once.
       - name: Setup Pages
-        if: ${{ matrix.deck == 'wheat' }} # run once in any single matrix leg
+        if: ${{ matrix.deck == 'seed-systems' }} # run once in any single matrix leg
         uses: actions/configure-pages@v4
 
       - name: Upload artifact (all decks)
-        if: ${{ matrix.deck == 'wheat' }} # run once
+        if: ${{ matrix.deck == 'seed-systems' }} # run once
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
