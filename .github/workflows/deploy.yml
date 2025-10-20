@@ -1,0 +1,68 @@
+name: Deploy pages (multi-decks)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        deck:
+          # <- list each deck folder under decks/
+          - seed-systems
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Install @antfu/ni (fast npm wrapper)
+        run: npm i -g @antfu/ni
+
+      - name: Install dependencies
+        run: nci
+
+      # Build each deck:
+      # - entry: decks/<name>/slides.md
+      # - out:   dist/<name>/
+      # - base:  /<repo>/<name>/  (required for GitHub Pages subpaths)
+      - name: Build ${{ matrix.deck }}
+        run: |
+          nr build decks/${{ matrix.deck }}/slides.md \
+            --out dist/${{ matrix.deck }} \
+            --base /${{ github.event.repository.name }}/${{ matrix.deck }}/
+
+      # After the matrix has produced dist/<deck>/... for all decks,
+      # upload the entire dist/ as the Pages artifact once.
+      - name: Setup Pages
+        if: ${{ matrix.deck == 'wheat' }} # run once in any single matrix leg
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact (all decks)
+        if: ${{ matrix.deck == 'wheat' }} # run once
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
