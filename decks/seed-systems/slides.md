@@ -149,7 +149,7 @@ class: img-left-contain
 
 <div class="h-full w-full flex items-center justify-center">
   <img
-    src="./assets/images/90 few crops.png"
+    src="./assets/images/90-few-crops.png"
     alt="few crops"
     class="max-h-[80vh] w-full object-contain"
   >
@@ -1000,7 +1000,7 @@ class: cols-gap
 
 <div class="h-full w-full flex items-center justify-center">
   <img
-    src=".\assets\images\gugpaper.png"
+    src="./assets/images/gugpaper.png"
     alt="few crops"
     class="max-h-[80vh] w-full object-contain"
   >
@@ -1038,7 +1038,7 @@ class: cols-gap
 
 <div class="h-full w-full flex items-center justify-center">
   <img
-    src=".\assets\images\gpbusiness.png"
+    src="./assets/images/gpbusiness.png"
     alt="few crops"
     class="max-h-[80vh] w-full object-contain"
   >
