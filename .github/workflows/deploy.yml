@@ -52,6 +52,17 @@ jobs:
       - name: Setup Pages
         if: ${{ matrix.deck == 'seed-systems' }} # run once in any single matrix leg
         uses: actions/configure-pages@v4
+        with:
+          enablement: true
+      
+      # after the build step, before Upload artifact
+      - name: Inspect build output
+        if: ${{ matrix.deck == 'seed-systems' }}
+        run: |
+          echo "PWD = $PWD"
+          ls -lah
+          ls -lah dist || true
+          ls -lah dist/${{ matrix.deck }} || true
 
       - name: Upload artifact (all decks)
         if: ${{ matrix.deck == 'seed-systems' }} # run once
@@ -62,7 +73,12 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:                     
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment               
         uses: actions/deploy-pages@v4

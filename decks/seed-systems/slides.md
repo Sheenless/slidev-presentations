@@ -714,7 +714,7 @@ layout: center
 
 ## Overview
 
-<img src="./assets/images/overall pathway.png"
+<img src="./assets/images/overall-pathway.png"
      class="mx-auto block max-h-[80vh]"
      alt="Descriptive alt text">
 
